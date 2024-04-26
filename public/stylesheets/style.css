@@ -6,3 +6,6 @@ body {
 a {
   color: #00B7FF;
 }
+.navbar-brand {
+  gap: 10px; /* Aggiungi qui lo spazio desiderato tra gli elementi del menu */
+}
