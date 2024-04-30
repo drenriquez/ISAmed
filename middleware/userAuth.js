@@ -1,16 +1,16 @@
-function userAuth (req,res,net){
-    const isLogged=true;
-    if(!isLogged){
-        return res.status(401).send("non sei autenticato")
-    }
+function checkCredentials(username, password) {
+    // Esegui il controllo delle credenziali come desiderato
+    return username === 'admin' && password === 'password';
 }
-function userPerms (req,res,net){
-    const isAmministrator=true;
-    if(!isAmministrator){
-        return res.status(403).send("non sei autorizzato")
+
+function userAuth(req, res, next) {
+    const { username, password } = req.body;
+    if (!checkCredentials(username, password)) {
+        return res.status(401).send("Credenziali non valide");
     }
+    next(); // Procedi alla prossima funzione nella catena di middleware
 }
-module.exports={
-    userAuth,
-    userPerms
+
+module.exports = {
+    userAuth
 };
