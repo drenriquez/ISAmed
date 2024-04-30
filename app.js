@@ -3,7 +3,7 @@ const fs=require('fs')
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const { userAuth, userPerms}=require('./middleware/userAuth');
+const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');//middleware per generare file di log
 const rfs = require('rotating-file-stream') // version 2.x
@@ -15,6 +15,25 @@ const loginRouter = require('./routes/login');
 const app = express();
 
 app.use(helmet());
+app.use(cookieParser());
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 3600000 } // Durata della sessione in millisecondi (1 ora)
+}));
+// Funzione per eliminare le sessioni scadute
+function cleanExpiredSessions() {
+  app.locals.sessions.forEach((session, sessionId) => {
+    if (session.expires < Date.now()) {
+      // Rimuovi la sessione scaduta
+      delete app.locals.sessions[sessionId];
+    }
+  });
+}
+// Esegui la pulizia delle sessioni scadute ogni minuto
+setInterval(cleanExpiredSessions, 60000); // Ogni minuto (60000 millisecondi)
+
 //-------- FFILE DI LOG -create a write stream (in append mode)-------------------------------------
 // create a rotating write stream
 var accessLogStream = rfs.createStream('access.log', {

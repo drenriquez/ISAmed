@@ -1,15 +1,16 @@
-function checkCredentials(username, password) {
-    // Esegui il controllo delle credenziali come desiderato
-    return username === 'admin' && password === 'password';
-}
 
 function userAuth(req, res, next) {
-    const { username, password } = req.body;
-    if (!checkCredentials(username, password)) {
-        return res.status(401).send("Credenziali non valide");
+    const isAuthenticated = req.session.isAuthenticated; // Verifica se l'utente è autenticato tramite la sessione
+
+    if (!isAuthenticated) {
+        // Se l'utente non è autenticato, reindirizza alla pagina di login
+        return res.redirect('/login');
     }
-    next(); // Procedi alla prossima funzione nella catena di middleware
+
+    // Se l'utente è autenticato, passa al middleware successivo
+    next();
 }
+
 
 module.exports = {
     userAuth
