@@ -5,7 +5,9 @@ const router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('login', { title: 'ISAmed' });
 });
-
+router.get('/login', function(req, res, next) {
+  res.render('login', { title: 'ISAmed' });
+});
 /* POST login form submission. */
 router.post('/login', function(req, res, next) {
   // Controlla le credenziali
@@ -15,7 +17,7 @@ router.post('/login', function(req, res, next) {
     res.redirect('/home');
   } else {
     // Credenziali errate, reindirizza alla pagina di login con un messaggio di errore
-    res.redirect('/login?error=1');
+    res.redirect('/');
   }
 });
 
