@@ -7,7 +7,7 @@ router.get('/logout',userAuth, function(req, res, next) {
     req.session.isAuthenticated=false
     req.session.destroy;
     res.redirect('/login')
-    console.log(req.session);
+    console.log("test logout");
 });
 
 module.exports = router;
