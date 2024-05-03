@@ -9,8 +9,9 @@ const morgan = require('morgan');//middleware per generare file di log
 const { v4: uuidv4 } = require('uuid');// generatore di identificatore univoco universale, è un numero a 128 bit utilizzato per identificare individualmente i dati
 
 const { MongoClient } = require('mongodb');
-const dbURI='';
-//const mongoClient= new MongoClient(dbURI, { useUnifiedTopology: true});
+const dbURI='mongodb://localhost:27017';
+const mongoClient= new MongoClient(dbURI);
+const MongoStore=require('connect-mongo');
 
 const rfs = require('rotating-file-stream') // version 2.x
 const helmet= require('helmet')// libreria middleware per Node.js che aiuta a proteggere le tue applicazioni Express impostando vari header HTTP correlati alla sicurezza
@@ -29,8 +30,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 3600000 }, // Durata della sessione in millisecondi (1 ora)
-  genid:()=> uuidv4(),
-  //store:
+  //genid:()=> uuidv4(),
+  store:new MongoStore({client:mongoClient, dbName:'ISAmedDB'})
 }));
 
 // Funzione per eliminare le sessioni scadute
