@@ -51,7 +51,7 @@ app.use(session({
 // create a rotating write stream
 var accessLogStream = rfs.createStream('access.log', {
   interval: '1d', // rotate daily
-  path: path.join(__dirname, 'logs')
+  path: path.join(__dirname)
 })
 //var accessLogStream = fs.createWriteStream(path.join(__dirname,'logs', 'access.log'), { flags: 'a' })
 // setup the logger
