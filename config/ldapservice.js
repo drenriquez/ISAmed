@@ -3,8 +3,8 @@
 const ldap = require('ldapjs');
 
 const ldap_server = 'ldap://vfdipdc5.dipvvf.it';
-const username = 'enrico.notaro@dipvvf.it';
-const password = 'U2164+m2713';
+const username = "";
+const password = '';
 
 const client = ldap.createClient({
   url: ldap_server,

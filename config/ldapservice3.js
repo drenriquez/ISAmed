@@ -52,7 +52,7 @@ module.exports = LDAPService;
 
 
 const ldapService = new LDAPService();
-ldapService.authenticate('enrico.notaro@dipvvf.it', 'U2164+m2713', (err, success) => {
+ldapService.authenticate('enrico.notaro@dipvvf.it', 'password', (err, success) => {
     if (err || !success) {
       // Autenticazione fallita
      console.log('Autenticazione fallita.' );
