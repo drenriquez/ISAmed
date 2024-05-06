@@ -9,8 +9,16 @@ const morgan = require('morgan');//middleware per generare file di log
 const { v4: uuidv4 } = require('uuid');// generatore di identificatore univoco universale, è un numero a 128 bit utilizzato per identificare individualmente i dati
 
 const { MongoClient } = require('mongodb');
-const dbURI='mongodb://localhost:27017';
-const mongoClient= new MongoClient(dbURI);
+const databaseConfig = require('./config/database');
+// Connessione al database MongoDB
+const mongoClient= new MongoClient(databaseConfig.dbURI);
+mongoClient.connect(function(err) {
+  if (err) {
+    console.error('Error connecting to MongoDB:', err);
+    return;
+  }
+  console.log('Connected to MongoDB');
+});
 const MongoStore=require('connect-mongo');
 
 const rfs = require('rotating-file-stream') // version 2.x
@@ -31,7 +39,11 @@ app.use(session({
   saveUninitialized: false,
   cookie: { maxAge: 3600000 }, // Durata della sessione in millisecondi (1 ora)
   //genid:()=> uuidv4(),
-  store:new MongoStore({client:mongoClient, dbName:'ISAmedDB'})
+  store: new MongoStore({ 
+    client: mongoClient, 
+    dbName: databaseConfig.dbName,
+    collection: 'sessions'
+  })
 }));
 
 // Funzione per eliminare le sessioni scadute
